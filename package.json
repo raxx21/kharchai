@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
+    "postinstall": "prisma generate",
     "seed": "tsx scripts/seed-sample-data.ts",
     "seed:bills": "tsx scripts/seed-bills.ts",
     "test": "./tests/run-all-tests.sh",
