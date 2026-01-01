@@ -1,0 +1,13 @@
+# Test Results
+test-results/
+playwright-report/
+*.log
+
+# Screenshots
+screenshots/
+
+# Trace files
+trace/
+
+# Playwright cache
+.cache/

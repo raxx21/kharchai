@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light Mode - Emerald & Purple Theme */
+    --background: 0 0% 100%;
+    --foreground: 160 10% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 160 10% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 160 10% 10%;
+
+    /* Primary: Emerald/Teal - Financial growth */
+    --primary: 160 84% 39%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary: Light Emerald */
+    --secondary: 160 60% 95%;
+    --secondary-foreground: 160 84% 25%;
+
+    /* Muted: Soft gray-green */
+    --muted: 160 20% 96%;
+    --muted-foreground: 160 10% 45%;
+
+    /* Accent: Purple - AI/Tech feel */
+    --accent: 271 91% 65%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Destructive: Red for errors/alerts */
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Borders and inputs */
+    --border: 160 30% 88%;
+    --input: 160 30% 88%;
+    --ring: 160 84% 39%;
+
+    --radius: 0.5rem;
+
+    /* Custom: Success (green), Warning (amber), Info (blue) */
+    --success: 142 76% 36%;
+    --warning: 38 92% 50%;
+    --info: 217 91% 60%;
+  }
+
+  .dark {
+    /* Dark Mode - Emerald & Purple Theme */
+    --background: 160 15% 8%;
+    --foreground: 160 10% 95%;
+
+    --card: 160 15% 10%;
+    --card-foreground: 160 10% 95%;
+
+    --popover: 160 15% 10%;
+    --popover-foreground: 160 10% 95%;
+
+    /* Primary: Lighter Emerald for dark mode */
+    --primary: 160 84% 45%;
+    --primary-foreground: 160 10% 10%;
+
+    /* Secondary: Dark emerald */
+    --secondary: 160 30% 15%;
+    --secondary-foreground: 160 60% 90%;
+
+    /* Muted: Dark gray-green */
+    --muted: 160 20% 18%;
+    --muted-foreground: 160 10% 65%;
+
+    /* Accent: Lighter Purple for dark mode */
+    --accent: 271 91% 70%;
+    --accent-foreground: 160 10% 10%;
+
+    /* Destructive: Softer red for dark mode */
+    --destructive: 0 72% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Borders and inputs */
+    --border: 160 25% 20%;
+    --input: 160 25% 20%;
+    --ring: 160 84% 45%;
+
+    /* Custom colors */
+    --success: 142 76% 42%;
+    --warning: 38 92% 55%;
+    --info: 217 91% 65%;
+  }
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
