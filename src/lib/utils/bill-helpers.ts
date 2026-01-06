@@ -1,4 +1,4 @@
-import { PrismaClient } from "@/generated/prisma";
+import { PrismaClient } from "@prisma/client";
 import { startOfDay } from "date-fns";
 
 type BillStatus = "UPCOMING" | "DUE_SOON" | "OVERDUE" | "PAID" | "CANCELLED";
