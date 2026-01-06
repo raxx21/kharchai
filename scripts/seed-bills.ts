@@ -1,4 +1,4 @@
-import { PrismaClient } from "../src/generated/prisma/index.js";
+import { PrismaClient } from "@prisma/client";
 import { generateUpcomingPayments } from "../src/lib/services/bill-recurrence-calculator.js";
 
 const prisma = new PrismaClient();
