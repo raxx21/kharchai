@@ -38,7 +38,7 @@ export async function createTestUser(
   const user = await prisma.user.create({
     data: {
       email,
-      password: hashedPassword,
+      passwordHash: hashedPassword,
       name,
     },
   });
