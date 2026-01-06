@@ -110,7 +110,7 @@ export async function createDefaultCategories(userId: string): Promise<TestCateg
     id: cat.id,
     name: cat.name,
     type: cat.type,
-    icon: cat.icon,
+    icon: cat.icon || "📁",
   }));
 }
 
