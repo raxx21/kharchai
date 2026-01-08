@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { AddBillDialog } from "@/components/bills/add-bill-dialog";
+import { EditBillDialog } from "@/components/bills/edit-bill-dialog";
 import { MarkBillPaidDialog } from "@/components/bills/mark-bill-paid-dialog";
 import {
   getBillStatusColor,
@@ -55,8 +56,10 @@ export default function BillsPage() {
   });
   const [loading, setLoading] = useState(true);
   const [showAddDialog, setShowAddDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
   const [showPayDialog, setShowPayDialog] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState<any>(null);
+  const [selectedBill, setSelectedBill] = useState<Bill | null>(null);
 
   useEffect(() => {
     fetchData();
@@ -88,6 +91,11 @@ export default function BillsPage() {
       bill: { name: bill.name },
     });
     setShowPayDialog(true);
+  };
+
+  const handleEditBill = (bill: Bill) => {
+    setSelectedBill(bill);
+    setShowEditDialog(true);
   };
 
   const getDaysUntilDue = (dueDate: string) => {
@@ -277,6 +285,14 @@ export default function BillsPage() {
                     </div>
 
                     <div className="flex gap-2 sm:flex-shrink-0">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleEditBill(bill)}
+                        className="text-xs sm:text-sm w-full sm:w-auto"
+                      >
+                        Edit
+                      </Button>
                       {nextPayment && nextPayment.status !== "PAID" && (
                         <Button
                           size="sm"
@@ -300,6 +316,13 @@ export default function BillsPage() {
         open={showAddDialog}
         onOpenChange={setShowAddDialog}
         onSuccess={fetchData}
+      />
+
+      <EditBillDialog
+        open={showEditDialog}
+        onOpenChange={setShowEditDialog}
+        onSuccess={fetchData}
+        bill={selectedBill}
       />
 
       <MarkBillPaidDialog
