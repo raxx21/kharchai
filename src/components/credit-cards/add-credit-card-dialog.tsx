@@ -116,7 +116,7 @@ export function AddCreditCardDialog({ open, onOpenChange, onSuccess }: AddCredit
         {creditCardBanks.length === 0 ? (
           <div className="py-8 text-center">
             <p className="text-muted-foreground mb-4">
-              No credit card banks available. Please add a bank with type "Credit Card" first from the Banks & Accounts page.
+              No credit card banks available. Please add a bank with type &quot;Credit Card&quot; first from the Banks & Accounts page.
             </p>
             <Button onClick={() => onOpenChange(false)} variant="outline">
               Close
@@ -139,7 +139,7 @@ export function AddCreditCardDialog({ open, onOpenChange, onSuccess }: AddCredit
                 </SelectContent>
               </Select>
               <p className="text-xs text-muted-foreground mt-1">
-                Only showing banks you added with type "Credit Card"
+                Only showing banks you added with type &quot;Credit Card&quot;
               </p>
             </div>
 

@@ -169,7 +169,7 @@ export default function CreditCardsPage() {
               No credit cards added yet
             </h3>
             <p className="text-sm text-muted-foreground mb-4 text-center max-w-md">
-              First, add a bank with type "Credit Card" from Banks & Accounts, then add billing details here
+              First, add a bank with type &quot;Credit Card&quot; from Banks & Accounts, then add billing details here
             </p>
             <div className="flex gap-2">
               <Link href="/banks">
