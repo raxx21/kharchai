@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { generateUpcomingPayments } from "@/lib/services/bill-recurrence-calculator";
+import { startOfDay } from "date-fns";
 
 // GET /api/bills/[id] - Get single bill with payment history
 export async function GET(
@@ -171,6 +173,54 @@ export async function PATCH(
         bank: true,
       },
     });
+
+    // Check if schedule-related fields were updated
+    const scheduleChanged =
+      data.recurrence !== undefined ||
+      data.dayOfMonth !== undefined ||
+      data.dayOfWeek !== undefined ||
+      data.startDate !== undefined ||
+      data.amount !== undefined ||
+      data.endDate !== undefined;
+
+    // If schedule changed, regenerate future unpaid payment instances
+    if (scheduleChanged) {
+      // Delete future unpaid payment instances
+      await prisma.billPayment.deleteMany({
+        where: {
+          billId: id,
+          status: {
+            in: ["UPCOMING", "DUE_SOON"],
+          },
+          dueDate: {
+            gte: new Date(),
+          },
+        },
+      });
+
+      // Regenerate payment instances with new schedule
+      const upcomingPayments = generateUpcomingPayments(
+        {
+          ...bill,
+          amount: parseFloat(bill.amount.toString()),
+          startDate: bill.startDate,
+          endDate: bill.endDate,
+        },
+        6
+      );
+
+      // Create new payment instances
+      for (const payment of upcomingPayments) {
+        await prisma.billPayment.create({
+          data: {
+            billId: bill.id,
+            dueDate: payment.dueDate,
+            amount: payment.amount,
+            status: "UPCOMING",
+          },
+        });
+      }
+    }
 
     return NextResponse.json({ bill });
   } catch (error) {
