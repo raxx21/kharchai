@@ -104,6 +104,7 @@ export function EditBillDialog({ open, onOpenChange, onSuccess, bill }: EditBill
         amount: parseFloat(formData.amount),
         categoryId: formData.categoryId,
         recurrence: formData.recurrence,
+        startDate: formData.startDate ? new Date(formData.startDate).toISOString() : undefined,
         endDate: formData.endDate ? new Date(formData.endDate).toISOString() : null,
         reminderDaysBefore: parseInt(formData.reminderDaysBefore),
         autoPay: formData.autoPay,
@@ -229,6 +230,17 @@ export function EditBillDialog({ open, onOpenChange, onSuccess, bill }: EditBill
                   <SelectItem value="ANNUAL">Annually</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+
+            <div>
+              <Label htmlFor="startDate">Start Date *</Label>
+              <Input
+                id="startDate"
+                type="date"
+                value={formData.startDate}
+                onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+                required
+              />
             </div>
 
             {showEndDate && (

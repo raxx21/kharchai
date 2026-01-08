@@ -71,6 +71,7 @@ export async function PATCH(
       amount: z.number().positive().optional(),
       categoryId: z.string().uuid().optional(),
       recurrence: z.enum(["ONE_TIME", "WEEKLY", "BIWEEKLY", "MONTHLY", "QUARTERLY", "SEMI_ANNUAL", "ANNUAL"]).optional(),
+      startDate: z.string().datetime().optional(),
       endDate: z.string().datetime().optional().nullable(),
       dayOfMonth: z.number().min(1).max(31).optional().nullable(),
       dayOfWeek: z.number().min(0).max(6).optional().nullable(),
@@ -152,6 +153,7 @@ export async function PATCH(
     if (data.amount !== undefined) updateData.amount = data.amount;
     if (data.categoryId !== undefined) updateData.categoryId = data.categoryId;
     if (data.recurrence !== undefined) updateData.recurrence = data.recurrence;
+    if (data.startDate !== undefined) updateData.startDate = new Date(data.startDate);
     if (data.endDate !== undefined) updateData.endDate = data.endDate ? new Date(data.endDate) : null;
     if (data.dayOfMonth !== undefined) updateData.dayOfMonth = data.dayOfMonth;
     if (data.dayOfWeek !== undefined) updateData.dayOfWeek = data.dayOfWeek;
