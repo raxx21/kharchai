@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { AddCreditCardDialog } from "@/components/credit-cards/add-credit-card-dialog";
 import {
   Table,
   TableBody,
@@ -64,38 +65,40 @@ export default function CreditCardsPage() {
   const [cycleTransactions, setCycleTransactions] =
     useState<CycleTransactions | null>(null);
   const [loadingCycle, setLoadingCycle] = useState(false);
+  const [showAddDialog, setShowAddDialog] = useState(false);
+
+  const fetchCreditCards = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch("/api/banks");
+      const data = await response.json();
+
+      // Filter banks that have credit cards
+      const cardsData =
+        data.banks
+          ?.filter((bank: any) => bank.creditCard)
+          .map((bank: any) => ({
+            ...bank.creditCard,
+            bank: {
+              id: bank.id,
+              name: bank.name,
+              color: bank.color,
+              icon: bank.icon,
+            },
+          })) || [];
+
+      setCreditCards(cardsData);
+
+      // Fetch cycle amounts for each card
+      await fetchAllCycleAmounts(cardsData);
+    } catch (error) {
+      console.error("Failed to fetch credit cards:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchCreditCards = async () => {
-      try {
-        const response = await fetch("/api/banks");
-        const data = await response.json();
-
-        // Filter banks that have credit cards
-        const cardsData =
-          data.banks
-            ?.filter((bank: any) => bank.creditCard)
-            .map((bank: any) => ({
-              ...bank.creditCard,
-              bank: {
-                id: bank.id,
-                name: bank.name,
-                color: bank.color,
-                icon: bank.icon,
-              },
-            })) || [];
-
-        setCreditCards(cardsData);
-
-        // Fetch cycle amounts for each card
-        await fetchAllCycleAmounts(cardsData);
-      } catch (error) {
-        console.error("Failed to fetch credit cards:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchCreditCards();
   }, []);
 
@@ -166,13 +169,22 @@ export default function CreditCardsPage() {
               No credit cards added yet
             </h3>
             <p className="text-sm text-muted-foreground mb-4 text-center max-w-md">
-              Add credit cards to track billing cycles and payment due dates
+              First, add a bank with type "Credit Card" from Banks & Accounts, then add billing details here
             </p>
-            <Link href="/banks">
-              <Button>Go to Banks & Add Credit Card</Button>
-            </Link>
+            <div className="flex gap-2">
+              <Link href="/banks">
+                <Button variant="outline">Go to Banks</Button>
+              </Link>
+              <Button onClick={() => setShowAddDialog(true)}>Add Credit Card Details</Button>
+            </div>
           </CardContent>
         </Card>
+
+        <AddCreditCardDialog
+          open={showAddDialog}
+          onOpenChange={setShowAddDialog}
+          onSuccess={fetchCreditCards}
+        />
       </div>
     );
   }
@@ -186,9 +198,12 @@ export default function CreditCardsPage() {
             Manage your credit cards and billing cycles
           </p>
         </div>
-        <Link href="/banks">
-          <Button variant="outline">Manage Banks</Button>
-        </Link>
+        <div className="flex gap-2">
+          <Link href="/banks">
+            <Button variant="outline">Manage Banks</Button>
+          </Link>
+          <Button onClick={() => setShowAddDialog(true)}>Add Credit Card</Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -495,6 +510,13 @@ export default function CreditCardsPage() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Add Credit Card Dialog */}
+      <AddCreditCardDialog
+        open={showAddDialog}
+        onOpenChange={setShowAddDialog}
+        onSuccess={fetchCreditCards}
+      />
     </div>
   );
 }
