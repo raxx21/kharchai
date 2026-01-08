@@ -11,7 +11,7 @@ const bankSchema = z.object({
 });
 
 // GET all banks for the current user
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const session = await auth();
 
@@ -19,8 +19,18 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // Parse query parameters
+    const { searchParams } = new URL(request.url);
+    const typeFilter = searchParams.get("type");
+
+    // Build where clause
+    const where: any = { userId: session.user.id };
+    if (typeFilter) {
+      where.type = typeFilter;
+    }
+
     const banks = await prisma.bank.findMany({
-      where: { userId: session.user.id },
+      where,
       include: {
         creditCard: true,
         _count: {
