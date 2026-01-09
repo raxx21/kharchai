@@ -36,7 +36,6 @@ interface Category {
   name: string;
   icon?: string | null;
   color?: string | null;
-  type: "INCOME" | "EXPENSE";
   isSystem: boolean;
   _count?: {
     transactions: number;
@@ -56,7 +55,6 @@ export function CategoryManagement() {
     name: "",
     icon: "",
     color: "#3B82F6",
-    type: "EXPENSE" as "INCOME" | "EXPENSE",
   });
 
   useEffect(() => {
@@ -95,7 +93,7 @@ export function CategoryManagement() {
       }
 
       setMessage({ type: "success", text: "Category added successfully!" });
-      setFormData({ name: "", icon: "", color: "#3B82F6", type: "EXPENSE" });
+      setFormData({ name: "", icon: "", color: "#3B82F6" });
       setShowAddDialog(false);
       fetchCategories();
     } catch (error: any) {
@@ -165,7 +163,6 @@ export function CategoryManagement() {
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead>
-                <TableHead>Type</TableHead>
                 <TableHead className="text-right">Usage</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
@@ -183,11 +180,6 @@ export function CategoryManagement() {
                         </Badge>
                       )}
                     </div>
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant={category.type === "INCOME" ? "default" : "destructive"}>
-                      {category.type}
-                    </Badge>
                   </TableCell>
                   <TableCell className="text-right text-sm text-muted-foreground">
                     {category._count?.transactions || 0} transactions
@@ -239,24 +231,6 @@ export function CategoryManagement() {
                 placeholder="e.g., Groceries, Salary"
                 required
               />
-            </div>
-
-            <div>
-              <Label htmlFor="type">Type *</Label>
-              <Select
-                value={formData.type}
-                onValueChange={(value: "INCOME" | "EXPENSE") =>
-                  setFormData({ ...formData, type: value })
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="EXPENSE">Expense</SelectItem>
-                  <SelectItem value="INCOME">Income</SelectItem>
-                </SelectContent>
-              </Select>
             </div>
 
             <div>
