@@ -20,8 +20,10 @@ import {
   Trash2,
   Mail,
   CheckCircle,
-  AlertCircle
+  AlertCircle,
+  FolderTree
 } from "lucide-react";
+import { CategoryManagement } from "@/components/settings/category-management";
 
 interface UserProfile {
   id: string;
@@ -192,7 +194,7 @@ export default function SettingsPage() {
 
       {/* Settings Tabs */}
       <Tabs defaultValue="profile" className="space-y-4 sm:space-y-6">
-        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1 sm:gap-0">
+        <TabsList className="grid w-full grid-cols-3 sm:grid-cols-5 gap-1 sm:gap-0">
           <TabsTrigger value="profile" className="text-xs sm:text-sm">
             <User className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" />
             <span className="hidden sm:inline">Profile</span>
@@ -202,6 +204,11 @@ export default function SettingsPage() {
             <Lock className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" />
             <span className="hidden sm:inline">Security</span>
             <span className="sm:hidden">Sec.</span>
+          </TabsTrigger>
+          <TabsTrigger value="categories" className="text-xs sm:text-sm">
+            <FolderTree className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" />
+            <span className="hidden sm:inline">Categories</span>
+            <span className="sm:hidden">Cat.</span>
           </TabsTrigger>
           <TabsTrigger value="preferences" className="text-xs sm:text-sm">
             <Globe className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" />
@@ -377,6 +384,11 @@ export default function SettingsPage() {
               </div>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        {/* Categories Tab */}
+        <TabsContent value="categories" className="space-y-4 sm:space-y-6">
+          <CategoryManagement />
         </TabsContent>
 
         {/* Preferences Tab */}

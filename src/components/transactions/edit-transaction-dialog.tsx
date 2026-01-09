@@ -21,6 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
+import { CategorySelect } from "@/components/ui/category-select";
 
 interface Transaction {
   id: string;
@@ -223,26 +224,14 @@ export function EditTransactionDialog({
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="category">Category</Label>
-                <Select
+                <CategorySelect
+                  categories={categories}
                   value={formData.categoryId}
                   onValueChange={(value) =>
                     setFormData({ ...formData, categoryId: value })
                   }
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categories.map((category) => (
-                      <SelectItem key={category.id} value={category.id}>
-                        <div className="flex items-center gap-2">
-                          <span>{category.icon}</span>
-                          <span>{category.name}</span>
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                  placeholder="Select category"
+                />
               </div>
 
               <div className="space-y-2">
